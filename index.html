@@ -45,12 +45,16 @@
             overflow: hidden;
             box-shadow: 0 0 20px var(--glow-color), 0 0 40px var(--secondary-glow-color);
             border: 2px solid var(--glow-color);
+            
+            /* Flexbox ile düzenleme */
+            display: flex;
+            flex-direction: column;
         }
 
         #game-canvas {
             display: block;
             width: 100%;
-            height: 100%;
+            flex-grow: 1; /* Kanvasın esnek bir şekilde büyümesini sağlar */
             background-color: #000;
         }
 
@@ -74,15 +78,15 @@
         }
 
         #question-ui {
-            position: absolute;
-            bottom: 80px; /* Bu satır korundu */
-            left: 0;
+            position: relative; /* Fixed yerine relative olarak değiştirildi */
+            margin-top: auto; /* Otomatik üst kenar boşluğu, aşağı iter */
             width: 100%;
             text-align: center;
             padding: 10px;
             background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
+            z-index: 1;
         }
-
+        
         #question-text {
             font-size: 1.5rem;
             text-shadow: 0 0 10px var(--secondary-glow-color);
@@ -104,7 +108,7 @@
             z-index: 10;
             padding: 20px;
         }
-
+        
         .hidden {
             display: none;
         }
@@ -120,7 +124,7 @@
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
-
+        
         .neon-button {
             font-family: var(--font-family);
             background-color: transparent;
@@ -136,24 +140,22 @@
             pointer-events: all;
             margin-top: 10px;
         }
-
+        
         .neon-button:hover, .neon-button:active {
             color: var(--bg-color);
             background-color: var(--glow-color);
             box-shadow: 0 0 20px var(--glow-color) inset, 0 0 20px var(--glow-color);
         }
-
+        
         #touch-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
             width: 100%;
             height: 80px;
             display: flex;
             z-index: 5;
             pointer-events: all;
+            position: relative;
         }
-
+        
         .touch-button {
             flex: 1;
             background-color: rgba(0, 255, 255, 0.1);
@@ -166,7 +168,7 @@
             user-select: none;
             -webkit-user-select: none;
         }
-
+        
         .touch-button:active {
             background-color: rgba(0, 255, 255, 0.3);
         }
@@ -204,7 +206,7 @@
         #leaderboard-table th {
             background-color: rgba(0, 255, 255, 0.1);
         }
-
+        
         #teacher-panel-toggle {
             position: absolute;
             top: 15px;
@@ -218,7 +220,7 @@
             pointer-events: all;
             opacity: 0.5;
         }
-
+        
         #teacher-panel {
             position: absolute;
             top: 50px;
@@ -230,21 +232,14 @@
             z-index: 15;
             pointer-events: all;
         }
-
+        
         #teacher-panel label {
             display: block;
             margin-bottom: 10px;
         }
-
+        
         #speed-slider {
             width: 100%;
-        }
-
-        /* Yeni eklenen CSS kuralı */
-        @media (max-width: 600px) {
-            #question-ui {
-                bottom: 100px;
-            }
         }
     </style>
 </head>
@@ -288,16 +283,16 @@
             </table>
             <button id="restart-button" class="neon-button">Try Again</button>
         </div>
-
+        
         <div id="touch-controls">
             <div id="left-button" class="touch-button">‹</div>
             <div id="right-button" class="touch-button">›</div>
         </div>
-
+        
         <button id="teacher-panel-toggle">⚙️</button>
         <div id="teacher-panel" class="hidden">
-             <label for="speed-slider">Game Speed</label>
-             <input type="range" id="speed-slider" min="0.5" max="2.0" value="1.0" step="0.1">
+            <label for="speed-slider">Game Speed</label>
+            <input type="range" id="speed-slider" min="0.5" max="2.0" value="1.0" step="0.1">
         </div>
     </div>
 
