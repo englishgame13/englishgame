@@ -60,6 +60,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none;
         }
 
         #game-ui {
@@ -74,14 +75,23 @@
             text-shadow: 0 0 5px var(--glow-color);
         }
 
-        #question-ui {
+        #question-area {
             position: absolute;
-            bottom: 120px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Yatayda ortalamak için */
+            z-index: 1;
+        }
+
+        #question-ui {
             width: 100%;
             text-align: center;
             padding: 10px;
             background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
-            z-index: 1;
+            margin-bottom: 20px;
         }
 
         #question-text {
@@ -145,9 +155,6 @@
         }
 
         #touch-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
             width: 100%;
             height: 80px;
             display: flex;
@@ -165,7 +172,7 @@
             align-items: center;
             user-select: none;
             -webkit-user-select: none;
-            pointer-events: all; /* Bu özellik tuşların tekrar tıklanabilir olmasını sağlar */
+            pointer-events: all;
         }
 
         .touch-button:active {
@@ -254,8 +261,15 @@
                 <div id="mistakes">Mistakes: 0/2</div>
             </div>
 
-            <div id="question-ui">
-                <div id="question-text">Loading...</div>
+            <div id="question-area">
+                <div id="question-ui">
+                    <div id="question-text">Loading...</div>
+                </div>
+
+                <div id="touch-controls">
+                    <div id="left-button" class="touch-button">‹</div>
+                    <div id="right-button" class="touch-button">›</div>
+                </div>
             </div>
         </div>
 
@@ -282,11 +296,6 @@
                 </tbody>
             </table>
             <button id="restart-button" class="neon-button">Try Again</button>
-        </div>
-
-        <div id="touch-controls">
-            <div id="left-button" class="touch-button">‹</div>
-            <div id="right-button" class="touch-button">›</div>
         </div>
 
         <button id="teacher-panel-toggle">⚙️</button>
@@ -654,7 +663,6 @@
                     selectNewQuestion();
                 }
             }
-
 
             // --- Game Logic ---
             function selectNewQuestion() {
