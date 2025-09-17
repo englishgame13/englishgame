@@ -68,19 +68,22 @@
         #game-ui {
             padding: 15px;
             display: flex;
+            flex-direction: column; /* Değişiklik: Öğeleri dikeyde sırala */
             justify-content: space-between;
+            align-items: center; /* Değişiklik: Öğeleri yatayda ortala */
             font-size: 1.2rem;
             text-shadow: 0 0 5px var(--glow-color);
         }
 
-        #question-ui {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
+        #game-stats {
+            display: flex;
+            justify-content: space-between;
             width: 100%;
+        }
+
+        #question-ui {
             text-align: center;
             padding: 10px;
-            background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
         }
         
         #question-text {
@@ -249,12 +252,13 @@
 
         <div class="ui-overlay">
             <div id="game-ui">
-                <div id="score">Score: 0</div>
-                <div id="level">Level: 1</div>
-                <div id="mistakes">Mistakes: 0/2</div>
-            </div>
-            <div id="question-ui">
-                <div id="question-text">Loading...</div>
+                <div id="game-stats"> <div id="score">Score: 0</div>
+                    <div id="level">Level: 1</div>
+                    <div id="mistakes">Mistakes: 0/2</div>
+                </div>
+                <div id="question-ui">
+                    <div id="question-text">Loading...</div>
+                </div>
             </div>
         </div>
 
@@ -646,7 +650,7 @@
                     ctx.textBaseline = 'middle';
                     ctx.fillText(sign.text, signX + sign.width / 2, sign.y + sign.height / 2);
                 });
-                 ctx.shadowBlur = 0;
+                   ctx.shadowBlur = 0;
             }
 
             function updateSigns(speed) {
