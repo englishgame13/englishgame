@@ -70,35 +70,38 @@
             width: 100%;
             padding: 15px;
             display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
-            text-shadow: 0 0 5px var(--glow-color);
+            flex-direction: column; /* Dikey hizalama için */
+            gap: 10px; /* Elemanlar arasına boşluk */
+            pointer-events: all; /* UI öğeleri için tıklama olaylarını etkinleştir */
+            z-index: 2; /* Diğer öğelerin önünde görünmesini sağla */
         }
         
         #question-area {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 1;
-        }
-
-        #question-ui {
             width: 100%;
             text-align: center;
             padding: 10px;
-            background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
+            background: rgba(13, 2, 33, 0.5); /* Hafif opak arka plan */
+            border-bottom: 1px solid var(--glow-color);
         }
 
         #question-text {
             font-size: 1.5rem;
             text-shadow: 0 0 10px var(--secondary-glow-color);
         }
+
+        #info-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px var(--glow-color);
+            padding: 0 10px;
+        }
         
         #touch-controls-container {
+            position: absolute; /* Butonları alta sabitle */
+            bottom: 0;
+            left: 0;
             width: 100%;
             padding: 0 10px 10px 10px;
             pointer-events: all;
@@ -261,21 +264,20 @@
 
         <div class="ui-overlay">
             <div id="game-ui">
-                <div id="score">Score: 0</div>
-                <div id="level">Level: 1</div>
-                <div id="mistakes">Mistakes: 0/2</div>
-            </div>
-
-            <div id="question-area">
-                <div id="question-ui">
+                <div id="info-bar">
+                    <div id="score">Score: 0</div>
+                    <div id="level">Level: 1</div>
+                    <div id="mistakes">Mistakes: 0/2</div>
+                </div>
+                <div id="question-area">
                     <div id="question-text">Loading...</div>
                 </div>
+            </div>
 
-                <div id="touch-controls-container">
-                    <div id="touch-controls">
-                        <div id="left-button" class="touch-button">‹</div>
-                        <div id="right-button" class="touch-button">›</div>
-                    </div>
+            <div id="touch-controls-container">
+                <div id="touch-controls">
+                    <div id="left-button" class="touch-button">‹</div>
+                    <div id="right-button" class="touch-button">›</div>
                 </div>
             </div>
         </div>
