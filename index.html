@@ -52,6 +52,7 @@
             width: 100%;
             height: 100%;
             background-color: #000;
+            z-index: 1; /* Oyun alanının arka planda kalmasını sağlar */
         }
 
         .ui-overlay {
@@ -61,27 +62,28 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 2; /* UI öğelerinin oyun alanının önünde olmasını sağlar */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* İçerikleri dikeyde ayırır */
         }
 
         #game-ui {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             padding: 15px;
             display: flex;
-            flex-direction: column; /* Dikey hizalama için */
-            gap: 10px; /* Elemanlar arasına boşluk */
-            pointer-events: all; /* UI öğeleri için tıklama olaylarını etkinleştir */
-            z-index: 2; /* Diğer öğelerin önünde görünmesini sağla */
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: all;
         }
         
         #question-area {
             width: 100%;
             text-align: center;
             padding: 10px;
-            background: rgba(13, 2, 33, 0.5); /* Hafif opak arka plan */
+            background: rgba(13, 2, 33, 0.5);
             border-bottom: 1px solid var(--glow-color);
+            z-index: 3;
         }
 
         #question-text {
@@ -96,22 +98,20 @@
             font-size: 1.2rem;
             text-shadow: 0 0 5px var(--glow-color);
             padding: 0 10px;
+            z-index: 3;
         }
         
         #touch-controls-container {
-            position: absolute; /* Butonları alta sabitle */
-            bottom: 0;
-            left: 0;
             width: 100%;
             padding: 0 10px 10px 10px;
             pointer-events: all;
+            z-index: 3; /* En alttaki kontrol butonlarının ön planda olmasını sağlar */
         }
 
         #touch-controls {
             width: 100%;
             height: 80px;
             display: flex;
-            z-index: 5;
             border-top: 2px solid var(--glow-color);
         }
 
@@ -846,7 +846,7 @@
                 let touchMoveX = e.touches[0].clientX;
                 let deltaX = touchMoveX - touchStartX;
 
-                if (Math.abs(deltaX) > 20) { // Swipe hassasiyeti
+                if (Math.abs(deltaX) > 20) {
                     if (deltaX > 0) {
                         movePlayer(1);
                     } else {
