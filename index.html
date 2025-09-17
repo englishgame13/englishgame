@@ -52,7 +52,6 @@
             width: 100%;
             height: 100%;
             background-color: #000;
-            z-index: 1; /* Oyun alanının arka planda kalmasını sağlar */
         }
 
         .ui-overlay {
@@ -61,75 +60,32 @@
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 2; /* UI öğelerinin oyun alanının önünde olmasını sağlar */
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* İçerikleri dikeyde ayırır */
+            pointer-events: none;
         }
 
         #game-ui {
-            width: 100%;
             padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            pointer-events: all;
-        }
-        
-        #question-area {
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background: rgba(13, 2, 33, 0.5);
-            border-bottom: 1px solid var(--glow-color);
-            z-index: 3;
-        }
-
-        #question-text {
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px var(--secondary-glow-color);
-        }
-
-        #info-bar {
-            width: 100%;
             display: flex;
             justify-content: space-between;
             font-size: 1.2rem;
             text-shadow: 0 0 5px var(--glow-color);
-            padding: 0 10px;
-            z-index: 3;
+        }
+
+        #question-ui {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
         }
         
-        #touch-controls-container {
-            width: 100%;
-            padding: 0 10px 10px 10px;
-            pointer-events: all;
-            z-index: 3; /* En alttaki kontrol butonlarının ön planda olmasını sağlar */
-        }
-
-        #touch-controls {
-            width: 100%;
-            height: 80px;
-            display: flex;
-            border-top: 2px solid var(--glow-color);
-        }
-
-        .touch-button {
-            flex: 1;
-            background-color: rgba(0, 255, 255, 0.1);
-            color: var(--glow-color);
-            font-size: 3rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            user-select: none;
-            -webkit-user-select: none;
-            pointer-events: all;
-        }
-
-        .touch-button:active {
-            background-color: rgba(0, 255, 255, 0.3);
+        #question-text {
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--secondary-glow-color);
         }
 
         .fullscreen-overlay {
@@ -148,7 +104,7 @@
             z-index: 10;
             padding: 20px;
         }
-
+        
         .hidden {
             display: none;
         }
@@ -164,7 +120,7 @@
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
-
+        
         .neon-button {
             font-family: var(--font-family);
             background-color: transparent;
@@ -180,11 +136,39 @@
             pointer-events: all;
             margin-top: 10px;
         }
-
+        
         .neon-button:hover, .neon-button:active {
             color: var(--bg-color);
             background-color: var(--glow-color);
             box-shadow: 0 0 20px var(--glow-color) inset, 0 0 20px var(--glow-color);
+        }
+        
+        #touch-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            z-index: 5;
+            pointer-events: all;
+        }
+        
+        .touch-button {
+            flex: 1;
+            background-color: rgba(0, 255, 255, 0.1);
+            border-top: 2px solid var(--glow-color);
+            color: var(--glow-color);
+            font-size: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .touch-button:active {
+            background-color: rgba(0, 255, 255, 0.3);
         }
 
         #username-input {
@@ -220,7 +204,7 @@
         #leaderboard-table th {
             background-color: rgba(0, 255, 255, 0.1);
         }
-
+        
         #teacher-panel-toggle {
             position: absolute;
             top: 15px;
@@ -234,7 +218,7 @@
             pointer-events: all;
             opacity: 0.5;
         }
-
+        
         #teacher-panel {
             position: absolute;
             top: 50px;
@@ -246,15 +230,16 @@
             z-index: 15;
             pointer-events: all;
         }
-
+        
         #teacher-panel label {
             display: block;
             margin-bottom: 10px;
         }
-
+        
         #speed-slider {
             width: 100%;
         }
+
     </style>
 </head>
 <body>
@@ -264,34 +249,20 @@
 
         <div class="ui-overlay">
             <div id="game-ui">
-                <div id="info-bar">
-                    <div id="score">Score: 0</div>
-                    <div id="level">Level: 1</div>
-                    <div id="mistakes">Mistakes: 0/2</div>
-                </div>
-                <div id="question-area">
-                    <div id="question-text">Loading...</div>
-                </div>
+                <div id="score">Score: 0</div>
+                <div id="level">Level: 1</div>
+                <div id="mistakes">Mistakes: 0/2</div>
             </div>
-
-            <div id="touch-controls-container">
-                <div id="touch-controls">
-                    <div id="left-button" class="touch-button">‹</div>
-                    <div id="right-button" class="touch-button">›</div>
-                </div>
+            <div id="question-ui">
+                <div id="question-text">Loading...</div>
             </div>
         </div>
 
-        <div id="main-menu-screen" class="fullscreen-overlay">
+        <div id="start-screen" class="fullscreen-overlay">
             <h1>Neon Word Racer</h1>
-            <input type="text" id="username-input" placeholder="Kullanıcı adınızı girin">
-            <button id="start-race-button" class="neon-button">Yarışa Başla</button>
-        </div>
-
-        <div id="tutorial-screen" class="fullscreen-overlay hidden">
-            <h1>Oyun Kılavuzu</h1>
-            <p id="tutorial-text"></p>
-            <button id="play-button" class="neon-button">Oyna</button>
+            <p>Yarışmaya devam etmek için doğru İngilizce kelimeyi seçin. İki hata yaparsanız oyun dışı kalırsınız! Mahmut Nedim hoca</p>
+            <input type="text" id="username-input" placeholder="Enter your username">
+            <button id="start-button" class="neon-button">Start Race</button>
         </div>
 
         <div id="game-over-screen" class="fullscreen-overlay hidden">
@@ -311,11 +282,16 @@
             </table>
             <button id="restart-button" class="neon-button">Try Again</button>
         </div>
-
+        
+        <div id="touch-controls">
+            <div id="left-button" class="touch-button">‹</div>
+            <div id="right-button" class="touch-button">›</div>
+        </div>
+        
         <button id="teacher-panel-toggle">⚙️</button>
         <div id="teacher-panel" class="hidden">
-            <label for="speed-slider">Game Speed</label>
-            <input type="range" id="speed-slider" min="0.5" max="2.0" value="1.0" step="0.1">
+             <label for="speed-slider">Game Speed</label>
+             <input type="range" id="speed-slider" min="0.5" max="2.0" value="1.0" step="0.1">
         </div>
     </div>
 
@@ -325,11 +301,9 @@
             const ctx = canvas.getContext('2d');
 
             // UI Elements
-            const mainMenuScreen = document.getElementById('main-menu-screen');
-            const tutorialScreen = document.getElementById('tutorial-screen');
+            const startScreen = document.getElementById('start-screen');
             const gameOverScreen = document.getElementById('game-over-screen');
-            const startRaceButton = document.getElementById('start-race-button');
-            const playButton = document.getElementById('play-button');
+            const startButton = document.getElementById('start-button');
             const restartButton = document.getElementById('restart-button');
             const scoreEl = document.getElementById('score');
             const finalScoreEl = document.getElementById('final-score');
@@ -343,13 +317,11 @@
             const speedSlider = document.getElementById('speed-slider');
             const usernameInput = document.getElementById('username-input');
             const leaderboardBody = document.getElementById('leaderboard-body');
-            const tutorialTextEl = document.getElementById('tutorial-text');
-            const touchControlsContainer = document.getElementById('touch-controls-container');
 
             let canvasWidth, canvasHeight;
             let isMobile = /Mobi|Android/i.test(navigator.userAgent);
             let touchStartX = 0;
-
+            
             // Game State
             const words = [
                 {"turkish": "Güzel", "english": "Beautiful"},
@@ -380,7 +352,7 @@
             let gameWords = [];
             let currentWordIndex = 0;
             let currentUsername = "Player";
-
+            
             let score = 0;
             let level = 1;
             let mistakes = 0;
@@ -399,7 +371,7 @@
                 targetLane: 0,
                 color: 'hsl(180, 100%, 50%)',
             };
-
+            
             // --- DYNAMIC LEVEL CONFIGURATION ---
             function getLevelConfig(currentLevel) {
                 const lanes = Math.min(6, Math.floor(3 + (currentLevel - 1) / 2));
@@ -439,7 +411,7 @@
                 canvasHeight = container.clientHeight;
                 canvas.width = canvasWidth;
                 canvas.height = canvasHeight;
-
+                
                 player.y = canvasHeight * 0.8;
                 if (!stars.length) createStars();
             }
@@ -447,29 +419,26 @@
             function init() {
                 resizeCanvas();
                 window.addEventListener('resize', resizeCanvas);
-
-                // Start Race Button
-                startRaceButton.addEventListener('click', () => {
+                
+                startButton.addEventListener('click', () => {
                     const username = usernameInput.value.trim();
                     if (username) {
                         currentUsername = username;
-                        mainMenuScreen.classList.add('hidden');
-                        showTutorial();
+                        startGame();
                     } else {
                         alert("Please enter a username!");
                     }
                 });
-
-                playButton.addEventListener('click', startGame);
                 restartButton.addEventListener('click', startGame);
 
                 // Controls
                 if (isMobile) {
-                    touchControlsContainer.style.display = 'flex';
+                    leftButton.addEventListener('pointerdown', () => movePlayer(-1));
+                    rightButton.addEventListener('pointerdown', () => movePlayer(1));
                     document.addEventListener('touchstart', handleTouchStart, false);
                     document.addEventListener('touchmove', handleTouchMove, false);
                 } else {
-                    touchControlsContainer.style.display = 'none';
+                    document.getElementById('touch-controls').style.display = 'none';
                     document.addEventListener('keydown', handleKeyDown);
                 }
                 
@@ -479,16 +448,7 @@
 
                 gameLoop();
             }
-
-            function showTutorial() {
-                tutorialScreen.classList.remove('hidden');
-                if (isMobile) {
-                    tutorialTextEl.textContent = "Roketi sola veya sağa hareket ettirmek için parmağınızı ekranın altında kaydırın.";
-                } else {
-                    tutorialTextEl.textContent = "Roketi sola veya sağa hareket ettirmek için sol ve sağ ok tuşlarını kullanın.";
-                }
-            }
-
+            
             function startGame() {
                 score = 0;
                 level = 1;
@@ -498,7 +458,7 @@
                 gameOver = false;
                 gameRunning = true;
                 signs = [];
-
+                
                 gameWords = [...words];
                 for (let i = gameWords.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -506,20 +466,19 @@
                 }
                 currentWordIndex = 0;
 
-                mainMenuScreen.classList.add('hidden');
-                tutorialScreen.classList.add('hidden');
+                startScreen.classList.add('hidden');
                 gameOverScreen.classList.add('hidden');
-
+                
                 const currentLanes = levelConfig.lanes;
                 player.lane = Math.floor(currentLanes / 2);
                 player.targetLane = player.lane;
-
+                
                 selectNewQuestion();
                 updateUI();
             }
-
+            
             // --- Game Loop ---
-
+            
             let lastTime = 0;
             function gameLoop(timestamp) {
                 const deltaTime = (timestamp - lastTime) / 1000 || 0;
@@ -529,19 +488,20 @@
 
                 drawStars();
                 drawRoad();
-                drawSigns(); // Önce kelimeleri çiz
-                drawPlayer(); // Sonra roketi çiz
-
+                
                 if (gameRunning) {
                     update(deltaTime);
                 }
 
+                drawSigns();
+                drawPlayer();
+
                 requestAnimationFrame(gameLoop);
             }
-
+            
             function update(deltaTime) {
                 if (gameOver) return;
-
+                
                 const speed = baseSpeed * speedMultiplier;
                 const levelConfig = getLevelConfig(level);
 
@@ -555,7 +515,7 @@
 
                 checkCollisions();
             }
-
+            
             // --- Drawing Functions ---
 
             function createStars() {
@@ -569,7 +529,7 @@
                     });
                 }
             }
-
+            
             function drawStars() {
                 stars.forEach(star => {
                     ctx.beginPath();
@@ -578,7 +538,7 @@
                     ctx.fill();
                 });
             }
-
+            
             function updateStars(speed) {
                 stars.forEach(star => {
                     star.y += speed * 0.1;
@@ -597,12 +557,12 @@
                 ctx.lineWidth = 5;
                 ctx.shadowBlur = 15;
                 ctx.shadowColor = `hsl(300, 100%, 70%)`;
-
+                
                 ctx.beginPath();
                 ctx.moveTo(10, 0);
                 ctx.lineTo(10, canvasHeight);
                 ctx.stroke();
-
+                
                 ctx.beginPath();
                 ctx.moveTo(canvasWidth - 10, 0);
                 ctx.lineTo(canvasWidth - 10, canvasHeight);
@@ -612,14 +572,14 @@
                 ctx.lineWidth = 2;
                 ctx.shadowBlur = 10;
                 ctx.shadowColor = `hsl(180, 100%, 50%)`;
-
+                
                 roadLines.forEach(line => {
                     ctx.beginPath();
                     ctx.moveTo(line.x, line.y);
                     ctx.lineTo(line.x, line.y + line.height);
                     ctx.stroke();
                 });
-
+                
                 ctx.shadowBlur = 0;
             }
 
@@ -642,7 +602,7 @@
                     }
                 });
             }
-
+            
             function drawPlayer() {
                 const p = player;
                 ctx.fillStyle = p.color;
@@ -660,12 +620,12 @@
                 ctx.shadowColor = '#ffffff';
                 ctx.shadowBlur = 15;
                 ctx.fillRect(p.x + p.width / 2 - 5, p.y + p.height, 10, 5 + (Math.random() * 5));
-
+                
                 ctx.shadowBlur = 0;
             }
 
             function drawSigns() {
-                const laneConfig = getLevelConfig(level).lanes;
+                const laneConfig = getLevelConfig(level);
                 const laneWidth = canvasWidth / laneConfig.lanes;
 
                 signs.forEach(sign => {
@@ -674,11 +634,11 @@
                     ctx.lineWidth = 3;
                     ctx.shadowColor = ctx.strokeStyle;
                     ctx.shadowBlur = 15;
-
+                    
                     const signX = sign.lane * laneWidth + (laneWidth / 2) - (sign.width / 2);
                     ctx.fillRect(signX, sign.y, sign.width, sign.height);
                     ctx.strokeRect(signX, sign.y, sign.width, sign.height);
-
+                    
                     ctx.shadowBlur = 0;
                     ctx.fillStyle = '#fff';
                     ctx.font = '20px ' + getComputedStyle(document.body).fontFamily;
@@ -686,20 +646,20 @@
                     ctx.textBaseline = 'middle';
                     ctx.fillText(sign.text, signX + sign.width / 2, sign.y + sign.height / 2);
                 });
-                ctx.shadowBlur = 0;
+                 ctx.shadowBlur = 0;
             }
 
             function updateSigns(speed) {
-                signs.forEach((sign, index) => {
-                    sign.y += speed;
-                    if (sign.y > canvasHeight) {
-                        signs.splice(index, 1);
-                    }
-                });
+                 signs.forEach((sign, index) => {
+                     sign.y += speed;
+                     if (sign.y > canvasHeight) {
+                         signs.splice(index, 1);
+                     }
+                 });
 
-                if (signs.length === 0 && gameRunning) {
-                    selectNewQuestion();
-                }
+                 if (signs.length === 0 && gameRunning) {
+                     selectNewQuestion();
+                 }
             }
 
 
@@ -717,10 +677,10 @@
                         [gameWords[i], gameWords[j]] = [gameWords[j], gameWords[i]];
                     }
                 }
-
+                
                 currentQuestion = gameWords[currentWordIndex];
                 currentWordIndex++;
-
+                
                 questionTextEl.textContent = `Which one is "${currentQuestion.turkish}"?`;
 
                 const options = [currentQuestion.english];
@@ -732,12 +692,12 @@
                         options.push(randomWord);
                     }
                 }
-
+                
                 for (let i = options.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [options[i], options[j]] = [options[j], options[i]];
                 }
-
+                
                 const assignedLanes = [];
                 signs = [];
                 for(let i = 0; i < laneConfig.options; i++) {
@@ -745,7 +705,7 @@
                      do {
                          lane = Math.floor(Math.random() * laneConfig.lanes);
                      } while(assignedLanes.includes(lane));
-
+                     
                      assignedLanes.push(lane);
 
                      signs.push({
@@ -758,10 +718,10 @@
                      });
                 }
             }
-
+            
             function checkCollisions() {
                 signs.forEach((sign, index) => {
-                    const laneConfig = getLevelConfig(level).lanes;
+                    const laneConfig = getLevelConfig(level);
                     const laneWidth = canvasWidth / laneConfig.lanes;
                     const signX = sign.lane * laneWidth + (laneWidth / 2) - (sign.width / 2);
 
@@ -769,7 +729,7 @@
                         player.x + player.width > signX &&
                         player.y < sign.y + sign.height &&
                         player.y + player.height > sign.y) {
-
+                        
                         if(sign.isCorrect) {
                             handleCorrectAnswer();
                         } else {
@@ -785,7 +745,7 @@
                 baseSpeed += 0.1;
                 player.color = 'hsl(120, 100%, 50%)';
                 setTimeout(() => player.color = 'hsl(180, 100%, 50%)', 200);
-
+                
                 const oldLevelConfig = getLevelConfig(level);
                 if (score >= oldLevelConfig.pointsToLevelUp) {
                     level++;
