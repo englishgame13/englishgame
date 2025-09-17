@@ -75,14 +75,14 @@
 
         #question-ui {
             position: absolute;
-            bottom: 80px;
+            bottom: 80px; /* Bu satır korundu */
             left: 0;
             width: 100%;
             text-align: center;
             padding: 10px;
             background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
         }
-        
+
         #question-text {
             font-size: 1.5rem;
             text-shadow: 0 0 10px var(--secondary-glow-color);
@@ -104,7 +104,7 @@
             z-index: 10;
             padding: 20px;
         }
-        
+
         .hidden {
             display: none;
         }
@@ -120,7 +120,7 @@
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
-        
+
         .neon-button {
             font-family: var(--font-family);
             background-color: transparent;
@@ -136,13 +136,13 @@
             pointer-events: all;
             margin-top: 10px;
         }
-        
+
         .neon-button:hover, .neon-button:active {
             color: var(--bg-color);
             background-color: var(--glow-color);
             box-shadow: 0 0 20px var(--glow-color) inset, 0 0 20px var(--glow-color);
         }
-        
+
         #touch-controls {
             position: absolute;
             bottom: 0;
@@ -153,7 +153,7 @@
             z-index: 5;
             pointer-events: all;
         }
-        
+
         .touch-button {
             flex: 1;
             background-color: rgba(0, 255, 255, 0.1);
@@ -166,7 +166,7 @@
             user-select: none;
             -webkit-user-select: none;
         }
-        
+
         .touch-button:active {
             background-color: rgba(0, 255, 255, 0.3);
         }
@@ -204,7 +204,7 @@
         #leaderboard-table th {
             background-color: rgba(0, 255, 255, 0.1);
         }
-        
+
         #teacher-panel-toggle {
             position: absolute;
             top: 15px;
@@ -218,7 +218,7 @@
             pointer-events: all;
             opacity: 0.5;
         }
-        
+
         #teacher-panel {
             position: absolute;
             top: 50px;
@@ -230,14 +230,21 @@
             z-index: 15;
             pointer-events: all;
         }
-        
+
         #teacher-panel label {
             display: block;
             margin-bottom: 10px;
         }
-        
+
         #speed-slider {
             width: 100%;
+        }
+
+        /* Yeni eklenen CSS kuralı */
+        @media (max-width: 600px) {
+            #question-ui {
+                bottom: 100px;
+            }
         }
     </style>
 </head>
@@ -281,12 +288,12 @@
             </table>
             <button id="restart-button" class="neon-button">Try Again</button>
         </div>
-        
+
         <div id="touch-controls">
             <div id="left-button" class="touch-button">‹</div>
             <div id="right-button" class="touch-button">›</div>
         </div>
-        
+
         <button id="teacher-panel-toggle">⚙️</button>
         <div id="teacher-panel" class="hidden">
              <label for="speed-slider">Game Speed</label>
@@ -637,11 +644,11 @@
                     ctx.textBaseline = 'middle';
                     ctx.fillText(sign.text, signX + sign.width / 2, sign.y + sign.height / 2);
                 });
-                 ctx.shadowBlur = 0;
+                ctx.shadowBlur = 0;
             }
 
             function updateSigns(speed) {
-                 signs.forEach((sign, index) => {
+                signs.forEach((sign, index) => {
                     sign.y += speed;
                     if (sign.y > canvasHeight) {
                         signs.splice(index, 1);
