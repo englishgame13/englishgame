@@ -529,13 +529,12 @@
 
                 drawStars();
                 drawRoad();
+                drawSigns(); // Önce kelimeleri çiz
+                drawPlayer(); // Sonra roketi çiz
 
                 if (gameRunning) {
                     update(deltaTime);
                 }
-
-                drawSigns();
-                drawPlayer();
 
                 requestAnimationFrame(gameLoop);
             }
