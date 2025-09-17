@@ -1,0 +1,14 @@
+/* Bu kod butonların daha büyük olmasını sağlar. */
+button {
+  width: 180px;
+  height: 70px;
+  font-size: 24px;
+  padding: 10px 20px;
+  border-radius: 12px;
+}
+
+/* Sayfa arka planını veya diğer öğeleri düzenlemek için ek kodlar */
+body {
+  background-color: #f0f0f0;
+  font-family: sans-serif;
+}
