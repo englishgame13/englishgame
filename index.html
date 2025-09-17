@@ -74,7 +74,7 @@
             font-size: 1.2rem;
             text-shadow: 0 0 5px var(--glow-color);
         }
-
+        
         #question-area {
             position: absolute;
             bottom: 0;
@@ -82,7 +82,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Yatayda ortalamak için */
+            align-items: center;
             z-index: 1;
         }
 
@@ -91,12 +91,42 @@
             text-align: center;
             padding: 10px;
             background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
-            margin-bottom: 20px;
         }
 
         #question-text {
             font-size: 1.5rem;
             text-shadow: 0 0 10px var(--secondary-glow-color);
+        }
+        
+        #touch-controls-container {
+            width: 100%;
+            padding: 0 10px 10px 10px; /* Sağa ve sola 10px boşluk */
+            pointer-events: all;
+        }
+
+        #touch-controls {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            z-index: 5;
+            border-top: 2px solid var(--glow-color);
+        }
+
+        .touch-button {
+            flex: 1;
+            background-color: rgba(0, 255, 255, 0.1);
+            color: var(--glow-color);
+            font-size: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            -webkit-user-select: none;
+            pointer-events: all;
+        }
+
+        .touch-button:active {
+            background-color: rgba(0, 255, 255, 0.3);
         }
 
         .fullscreen-overlay {
@@ -152,31 +182,6 @@
             color: var(--bg-color);
             background-color: var(--glow-color);
             box-shadow: 0 0 20px var(--glow-color) inset, 0 0 20px var(--glow-color);
-        }
-
-        #touch-controls {
-            width: 100%;
-            height: 80px;
-            display: flex;
-            z-index: 5;
-        }
-
-        .touch-button {
-            flex: 1;
-            background-color: rgba(0, 255, 255, 0.1);
-            border-top: 2px solid var(--glow-color);
-            color: var(--glow-color);
-            font-size: 3rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            user-select: none;
-            -webkit-user-select: none;
-            pointer-events: all;
-        }
-
-        .touch-button:active {
-            background-color: rgba(0, 255, 255, 0.3);
         }
 
         #username-input {
@@ -266,9 +271,11 @@
                     <div id="question-text">Loading...</div>
                 </div>
 
-                <div id="touch-controls">
-                    <div id="left-button" class="touch-button">‹</div>
-                    <div id="right-button" class="touch-button">›</div>
+                <div id="touch-controls-container">
+                    <div id="touch-controls">
+                        <div id="left-button" class="touch-button">‹</div>
+                        <div id="right-button" class="touch-button">›</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -663,6 +670,7 @@
                     selectNewQuestion();
                 }
             }
+
 
             // --- Game Logic ---
             function selectNewQuestion() {
