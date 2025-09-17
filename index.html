@@ -45,16 +45,12 @@
             overflow: hidden;
             box-shadow: 0 0 20px var(--glow-color), 0 0 40px var(--secondary-glow-color);
             border: 2px solid var(--glow-color);
-            
-            /* Flexbox ile düzenleme */
-            display: flex;
-            flex-direction: column;
         }
 
         #game-canvas {
             display: block;
             width: 100%;
-            flex-grow: 1; /* Kanvasın esnek bir şekilde büyümesini sağlar */
+            height: 100%;
             background-color: #000;
         }
 
@@ -64,12 +60,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            pointer-events: none;
         }
 
         #game-ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             padding: 15px;
             display: flex;
             justify-content: space-between;
@@ -78,15 +75,15 @@
         }
 
         #question-ui {
-            position: relative; /* Fixed yerine relative olarak değiştirildi */
-            margin-top: auto; /* Otomatik üst kenar boşluğu, aşağı iter */
+            position: absolute;
+            bottom: 120px;
             width: 100%;
             text-align: center;
             padding: 10px;
             background: linear-gradient(0deg, rgba(13, 2, 33, 1) 0%, rgba(13, 2, 33, 0) 100%);
             z-index: 1;
         }
-        
+
         #question-text {
             font-size: 1.5rem;
             text-shadow: 0 0 10px var(--secondary-glow-color);
@@ -108,7 +105,7 @@
             z-index: 10;
             padding: 20px;
         }
-        
+
         .hidden {
             display: none;
         }
@@ -124,7 +121,7 @@
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
-        
+
         .neon-button {
             font-family: var(--font-family);
             background-color: transparent;
@@ -140,22 +137,23 @@
             pointer-events: all;
             margin-top: 10px;
         }
-        
+
         .neon-button:hover, .neon-button:active {
             color: var(--bg-color);
             background-color: var(--glow-color);
             box-shadow: 0 0 20px var(--glow-color) inset, 0 0 20px var(--glow-color);
         }
-        
+
         #touch-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
             width: 100%;
             height: 80px;
             display: flex;
             z-index: 5;
-            pointer-events: all;
-            position: relative;
         }
-        
+
         .touch-button {
             flex: 1;
             background-color: rgba(0, 255, 255, 0.1);
@@ -167,8 +165,9 @@
             align-items: center;
             user-select: none;
             -webkit-user-select: none;
+            pointer-events: all; /* Bu özellik tuşların tekrar tıklanabilir olmasını sağlar */
         }
-        
+
         .touch-button:active {
             background-color: rgba(0, 255, 255, 0.3);
         }
@@ -206,7 +205,7 @@
         #leaderboard-table th {
             background-color: rgba(0, 255, 255, 0.1);
         }
-        
+
         #teacher-panel-toggle {
             position: absolute;
             top: 15px;
@@ -220,7 +219,7 @@
             pointer-events: all;
             opacity: 0.5;
         }
-        
+
         #teacher-panel {
             position: absolute;
             top: 50px;
@@ -232,12 +231,12 @@
             z-index: 15;
             pointer-events: all;
         }
-        
+
         #teacher-panel label {
             display: block;
             margin-bottom: 10px;
         }
-        
+
         #speed-slider {
             width: 100%;
         }
@@ -254,6 +253,7 @@
                 <div id="level">Level: 1</div>
                 <div id="mistakes">Mistakes: 0/2</div>
             </div>
+
             <div id="question-ui">
                 <div id="question-text">Loading...</div>
             </div>
@@ -283,12 +283,12 @@
             </table>
             <button id="restart-button" class="neon-button">Try Again</button>
         </div>
-        
+
         <div id="touch-controls">
             <div id="left-button" class="touch-button">‹</div>
             <div id="right-button" class="touch-button">›</div>
         </div>
-        
+
         <button id="teacher-panel-toggle">⚙️</button>
         <div id="teacher-panel" class="hidden">
             <label for="speed-slider">Game Speed</label>
@@ -320,7 +320,7 @@
             const leaderboardBody = document.getElementById('leaderboard-body');
 
             let canvasWidth, canvasHeight;
-            
+
             // Game State
             const words = [
                 {"turkish": "Güzel", "english": "Beautiful"},
@@ -351,7 +351,7 @@
             let gameWords = [];
             let currentWordIndex = 0;
             let currentUsername = "Player";
-            
+
             let score = 0;
             let level = 1;
             let mistakes = 0;
@@ -370,7 +370,7 @@
                 targetLane: 0,
                 color: 'hsl(180, 100%, 50%)',
             };
-            
+
             // --- DYNAMIC LEVEL CONFIGURATION ---
             function getLevelConfig(currentLevel) {
                 const lanes = Math.min(6, Math.floor(3 + (currentLevel - 1) / 2));
@@ -410,7 +410,7 @@
                 canvasHeight = container.clientHeight;
                 canvas.width = canvasWidth;
                 canvas.height = canvasHeight;
-                
+
                 player.y = canvasHeight * 0.8;
                 if (!stars.length) createStars();
             }
@@ -418,7 +418,7 @@
             function init() {
                 resizeCanvas();
                 window.addEventListener('resize', resizeCanvas);
-                
+
                 startButton.addEventListener('click', () => {
                     const username = usernameInput.value.trim();
                     if (username) {
@@ -434,14 +434,14 @@
                 document.addEventListener('keydown', handleKeyDown);
                 leftButton.addEventListener('pointerdown', () => movePlayer(-1));
                 rightButton.addEventListener('pointerdown', () => movePlayer(1));
-                
+
                 // Teacher Panel
                 teacherPanelToggle.addEventListener('click', () => teacherPanel.classList.toggle('hidden'));
                 speedSlider.addEventListener('input', (e) => speedMultiplier = parseFloat(e.target.value));
 
                 gameLoop();
             }
-            
+
             function startGame() {
                 score = 0;
                 level = 1;
@@ -451,7 +451,7 @@
                 gameOver = false;
                 gameRunning = true;
                 signs = [];
-                
+
                 gameWords = [...words];
                 for (let i = gameWords.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -461,17 +461,17 @@
 
                 startScreen.classList.add('hidden');
                 gameOverScreen.classList.add('hidden');
-                
+
                 const currentLanes = levelConfig.lanes;
                 player.lane = Math.floor(currentLanes / 2);
                 player.targetLane = player.lane;
-                
+
                 selectNewQuestion();
                 updateUI();
             }
-            
+
             // --- Game Loop ---
-            
+
             let lastTime = 0;
             function gameLoop(timestamp) {
                 const deltaTime = (timestamp - lastTime) / 1000 || 0;
@@ -481,7 +481,7 @@
 
                 drawStars();
                 drawRoad();
-                
+
                 if (gameRunning) {
                     update(deltaTime);
                 }
@@ -491,10 +491,10 @@
 
                 requestAnimationFrame(gameLoop);
             }
-            
+
             function update(deltaTime) {
                 if (gameOver) return;
-                
+
                 const speed = baseSpeed * speedMultiplier;
                 const levelConfig = getLevelConfig(level);
 
@@ -508,7 +508,7 @@
 
                 checkCollisions();
             }
-            
+
             // --- Drawing Functions ---
 
             function createStars() {
@@ -522,7 +522,7 @@
                     });
                 }
             }
-            
+
             function drawStars() {
                 stars.forEach(star => {
                     ctx.beginPath();
@@ -531,7 +531,7 @@
                     ctx.fill();
                 });
             }
-            
+
             function updateStars(speed) {
                 stars.forEach(star => {
                     star.y += speed * 0.1;
@@ -550,12 +550,12 @@
                 ctx.lineWidth = 5;
                 ctx.shadowBlur = 15;
                 ctx.shadowColor = `hsl(300, 100%, 70%)`;
-                
+
                 ctx.beginPath();
                 ctx.moveTo(10, 0);
                 ctx.lineTo(10, canvasHeight);
                 ctx.stroke();
-                
+
                 ctx.beginPath();
                 ctx.moveTo(canvasWidth - 10, 0);
                 ctx.lineTo(canvasWidth - 10, canvasHeight);
@@ -565,14 +565,14 @@
                 ctx.lineWidth = 2;
                 ctx.shadowBlur = 10;
                 ctx.shadowColor = `hsl(180, 100%, 50%)`;
-                
+
                 roadLines.forEach(line => {
                     ctx.beginPath();
                     ctx.moveTo(line.x, line.y);
                     ctx.lineTo(line.x, line.y + line.height);
                     ctx.stroke();
                 });
-                
+
                 ctx.shadowBlur = 0;
             }
 
@@ -595,7 +595,7 @@
                     }
                 });
             }
-            
+
             function drawPlayer() {
                 const p = player;
                 ctx.fillStyle = p.color;
@@ -613,12 +613,12 @@
                 ctx.shadowColor = '#ffffff';
                 ctx.shadowBlur = 15;
                 ctx.fillRect(p.x + p.width / 2 - 5, p.y + p.height, 10, 5 + (Math.random() * 5));
-                
+
                 ctx.shadowBlur = 0;
             }
 
             function drawSigns() {
-                const laneConfig = getLevelConfig(level);
+                const laneConfig = getLevelConfig(level).lanes;
                 const laneWidth = canvasWidth / laneConfig.lanes;
 
                 signs.forEach(sign => {
@@ -627,11 +627,11 @@
                     ctx.lineWidth = 3;
                     ctx.shadowColor = ctx.strokeStyle;
                     ctx.shadowBlur = 15;
-                    
+
                     const signX = sign.lane * laneWidth + (laneWidth / 2) - (sign.width / 2);
                     ctx.fillRect(signX, sign.y, sign.width, sign.height);
                     ctx.strokeRect(signX, sign.y, sign.width, sign.height);
-                    
+
                     ctx.shadowBlur = 0;
                     ctx.fillStyle = '#fff';
                     ctx.font = '20px ' + getComputedStyle(document.body).fontFamily;
@@ -670,10 +670,10 @@
                         [gameWords[i], gameWords[j]] = [gameWords[j], gameWords[i]];
                     }
                 }
-                
+
                 currentQuestion = gameWords[currentWordIndex];
                 currentWordIndex++;
-                
+
                 questionTextEl.textContent = `Which one is "${currentQuestion.turkish}"?`;
 
                 const options = [currentQuestion.english];
@@ -685,12 +685,12 @@
                         options.push(randomWord);
                     }
                 }
-                
+
                 for (let i = options.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [options[i], options[j]] = [options[j], options[i]];
                 }
-                
+
                 const assignedLanes = [];
                 signs = [];
                 for(let i = 0; i < laneConfig.options; i++) {
@@ -698,7 +698,7 @@
                      do {
                          lane = Math.floor(Math.random() * laneConfig.lanes);
                      } while(assignedLanes.includes(lane));
-                     
+
                      assignedLanes.push(lane);
 
                      signs.push({
@@ -711,10 +711,10 @@
                      });
                 }
             }
-            
+
             function checkCollisions() {
                 signs.forEach((sign, index) => {
-                    const laneConfig = getLevelConfig(level);
+                    const laneConfig = getLevelConfig(level).lanes;
                     const laneWidth = canvasWidth / laneConfig.lanes;
                     const signX = sign.lane * laneWidth + (laneWidth / 2) - (sign.width / 2);
 
@@ -722,7 +722,7 @@
                         player.x + player.width > signX &&
                         player.y < sign.y + sign.height &&
                         player.y + player.height > sign.y) {
-                        
+
                         if(sign.isCorrect) {
                             handleCorrectAnswer();
                         } else {
@@ -738,7 +738,7 @@
                 baseSpeed += 0.1;
                 player.color = 'hsl(120, 100%, 50%)';
                 setTimeout(() => player.color = 'hsl(180, 100%, 50%)', 200);
-                
+
                 const oldLevelConfig = getLevelConfig(level);
                 if (score >= oldLevelConfig.pointsToLevelUp) {
                     level++;
